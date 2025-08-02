@@ -1,0 +1,18 @@
+# Dependências do Node.js
+/node_modules/
+
+# Logs do NPM
+npm-debug.log*
+
+# Variáveis de ambiente (cruciais para segurança)
+.env
+
+# Diretório para upload de arquivos, como as fotos do dashboard
+# Estas imagens serão gerenciadas pelo servidor e não precisam estar no Git
+/uploads/
+
+# Imagens criadas pelo Node.js para cache ou redimensionamento
+*.jpg
+*.jpeg
+*.png
+*.gif

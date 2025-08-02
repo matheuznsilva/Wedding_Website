@@ -1,0 +1,409 @@
+/* Importação das fontes do Google Fonts */
+/* A fonte 'Great Vibes' é para os nomes, e a 'Cormorant Garamond' para a data */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Great+Vibes&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nata+Sans:wght@100..900&family=League+Script&family=WindSong:wght@400;500&display=swap');
+/* Reset básico para remover margens e paddings padrão dos navegadores */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+}
+
+.home-hero {
+    /* Define o tamanho da seção para ocupar a tela inteira */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    color: white; /* Cor do texto branco para contrastar com o fundo */
+    text-align: center;
+    /* Define a imagem de fundo */
+    background-image: url('../img/fotocasal.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* Fundo preto semi-transparente para o texto se destacar */
+}
+
+.hero-content {
+    position: relative;
+    z-index: 10; /* Garante que o conteúdo fique acima do 'overlay' */
+}
+
+.names {
+    font-family: 'WindSong', sans-serif;
+    font-size: 5rem; /* Aumenta o tamanho da fonte para destaque */
+    line-height: 1.2;
+}
+
+.date {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    margin-top: 1rem;
+}
+
+
+/*===============================
+        BARRA DE NAVERAÇÃO
+=================================*/
+/* Estilos gerais para o cabeçalho principal */
+.main-header {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 1rem 2rem;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    display: flex; /* Alinha os itens na horizontal */
+    justify-content: space-between; /* Espaça os itens: esquerda, centro, direita */
+    align-items: center; /* Centraliza os itens verticalmente */
+}
+
+/* Estilos para a parte esquerda (iniciais) */
+.header-left .logo {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2rem;
+    color: #8B4513;
+}
+
+/* Estilos para a barra de navegação central */
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+}
+
+.main-nav a {
+    text-decoration: none;
+    font-family: 'Cormorant Garamond', serif;
+    color: #333;
+    font-size: 1.1rem;
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+.main-nav a:hover {
+    color: #8B4513;
+}
+
+/* Estilos para o submenu */
+.main-nav .dropdown {
+    position: relative;
+}
+
+.main-nav .submenu {
+    display: none; /* Esconde o submenu por padrão */
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza o submenu */
+    background-color: #f9f9f9;
+    padding: 0.5rem 0;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    min-width: 170px;
+    margin-top: 25px;
+}
+
+.main-nav .dropdown:hover .submenu {
+    display: block; /* Mostra o submenu ao passar o mouse */
+}
+
+.main-nav .submenu a {
+    font-weight: 400; /* Fonte mais leve para os itens do submenu */
+    padding: 0.5rem 1rem;
+    display: block;
+    text-align: left;
+}
+
+/* Estilos para a parte direita (botão de login) */
+.header-right .login-button {
+    text-decoration: none;
+    font-family: 'Cormorant Garamond', serif;
+    color: white;
+    background-color: #8B4513;
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
+    font-weight: 700;
+    transition: background-color 0.3s ease;
+}
+
+.header-right .login-button:hover {
+    background-color: #A0522D;
+}
+
+/* Estilo para remover a barra do logo */
+.header-left .logo a {
+    text-decoration: none; /* Remove o sublinhado do link */
+    color: inherit; /* Faz o link herdar a cor do elemento pai (o J&P) */
+    transition: color 0.3s ease;
+}
+
+.header-left .logo a:hover {
+    color: #A0522D; /* Uma cor de destaque ao passar o mouse */
+}
+
+
+/*===============================
+        HISTORIA DO CASAL
+=================================*/
+/* Estilo para o conteúdo principal de todas as páginas */
+.page-content {
+    padding: 6rem 1rem; /* Espaçamento superior para não ficar embaixo do menu fixo */
+    max-width: 1000px;
+    margin: 0 auto;
+    font-family: 'Cormorant Garamond', serif;
+    color: #444;
+}
+
+/* Título de seção */
+.section-historia h2 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #8B4513; /* Um tom de marrom para o título */
+}
+
+/* Container para a foto e o texto lado a lado */
+.historia-container {
+    display: flex;
+    flex-wrap: wrap; /* Permite que os itens quebrem a linha em telas menores */
+    align-items: center;
+    gap: 2rem;
+}
+
+.historia-imagem {
+    flex: 1; /* Permite que a imagem ocupe o espaço disponível */
+    min-width: 300px; /* Garante que a imagem não fique muito pequena */
+    text-align: center;
+}
+
+.historia-imagem img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px; /* Cantos arredondados na imagem */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.historia-texto {
+    flex: 2; /* Permite que o texto ocupe mais espaço que a imagem */
+}
+
+.historia-texto p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+/* Media Query para telas menores (smartphones) */
+@media (max-width: 768px) {
+    .historia-container {
+        flex-direction: column; /* Empilha a imagem e o texto verticalmente */
+        text-align: center;
+    }
+}
+
+
+/*===============================
+              DICAS
+=================================*/
+/* Estilos para o menu de botões da página de Dicas */
+.section-dicas h2 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #8B4513;
+}
+
+.dicas-menu {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap; /* Garante que os botões quebrem a linha em telas pequenas */
+}
+
+.dica-botao {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #444;
+    background-color: #f7f3f0;
+    border: 2px solid #8B4513;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dica-botao:hover {
+    background-color: #8B4513;
+    color: white;
+}
+
+/* Estilo para a área de conteúdo das dicas */
+#conteudo-dica {
+    padding: 2rem;
+    background-color: #f7f3f0;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    min-height: 200px; /* Para que a área não encolha demais */
+}
+
+#conteudo-dica p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    text-align: center;
+}
+
+
+/*===============================
+              LOGIN
+=================================*/
+/* Estilos para a página de login */
+.login-page {
+    background-color: #f7f3f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.login-container {
+    padding: 2rem;
+    max-width: 400px;
+    width: 100%;
+}
+
+.login-box {
+    background-color: white;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.login-box h2 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.5rem;
+    color: #8B4513;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.login-button {
+    width: 100%;
+    padding: 0.8rem;
+    border: none;
+    background-color: #8B4513;
+    color: white;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #A0522D;
+}
+
+
+
+/*===============================
+            DASHBOARD
+=================================*/
+/* Estilos para a página do Dashboard */
+.dashboard-page {
+    background-color: #f7f3f0;
+    min-height: 100vh;
+}
+
+.dashboard-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard-menu {
+    flex-shrink: 0; /* Impede que o menu encolha */
+    width: 250px;
+    padding: 2rem;
+    background-color: white;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-menu h3 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.5rem;
+    color: #8B4513;
+    margin-bottom: 2rem;
+}
+
+.dashboard-menu ul {
+    list-style: none;
+}
+
+.dashboard-menu a {
+    display: block;
+    padding: 0.8rem 1rem;
+    font-family: 'Cormorant Garamond', serif;
+    color: #444;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+    border-radius: 4px;
+}
+
+.dashboard-menu a:hover {
+    background-color: #f0e9e5;
+}
+
+.dashboard-content {
+    flex-grow: 1;
+    padding: 2rem;
+}
+
+.dashboard-content h2 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.5rem;
+    color: #8B4513;
+    margin-bottom: 1rem;
+}
