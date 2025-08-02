@@ -405,5 +405,67 @@ body, html {
     font-family: 'Great Vibes', cursive;
     font-size: 2.5rem;
     color: #8B4513;
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-content form {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-content .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-content .form-group label {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+
+.dashboard-content .form-group input[type="text"],
+.dashboard-content .form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+.dashboard-content .form-group textarea {
+    resize: vertical; /* Permite redimensionar apenas na vertical */
+}
+
+.dashboard-content .form-group input[type="file"] {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.dashboard-content .login-button {
+    /* O botão de login já tem um estilo que podemos reutilizar */
+    width: auto;
+    padding: 0.8rem 2rem;
+}
+
+/* Estilos para a página de gerenciamento de dicas no dashboard */
+.dicas-admin-container form {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
+}
+
+.dicas-admin-container h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    color: #555;
     margin-bottom: 1rem;
 }

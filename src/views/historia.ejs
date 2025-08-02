@@ -18,17 +18,15 @@
         <section class="section-historia">
             <h2>Nossa História</h2>
             <div class="historia-container">
-                <div class="historia-imagem">
-                    <img src="assets/img/J_P.png" alt="Foto do casal para a história">
-                </div>
-                <div class="historia-texto">
-                    <p>
-                        Aqui você poderá contar a história de como os noivos se conheceram, 
-                        o primeiro encontro, o pedido de casamento e outros momentos especiais.
-                        Esse texto será carregado pelo nosso backend a partir do banco de dados.
-                    </p>
-                </div>
-            </div>
+        <div class="historia-imagem">
+            <% if (historia.imagem_url) { %>
+                <img src="<%= historia.imagem_url %>" alt="Foto do casal para a história">
+            <% } %>
+        </div>
+        <div class="historia-texto">
+            <p><%= historia.texto %></p>
+        </div>
+    </div>
         </section>
     </main>
 

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Dicas - Dashboard</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body class="dashboard-page">
+
+    <div class="dashboard-container">
+        <%- include('../../public/components/dashboard_menu.html') %>
+
+        <main class="dashboard-content">
+            <h2>Gerenciar Dicas</h2>
+            <div class="dicas-admin-container">
+                <form action="/dashboard/dicas/dresscode" method="POST">
+                    <h3>Dress Code</h3>
+                    <textarea name="conteudo" rows="5" required></textarea>
+                    <button type="submit" class="login-button">Salvar Dress Code</button>
+                </form>
+
+                <form action="/dashboard/dicas/hoteis" method="POST">
+                    <h3>Hotéis</h3>
+                    <textarea name="conteudo" rows="5" required></textarea>
+                    <button type="submit" class="login-button">Salvar Hotéis</button>
+                </form>
+                
+                <form action="/dashboard/dicas/salao" method="POST">
+                    <h3>Salões de Beleza e Barbearias</h3>
+                    <textarea name="conteudo" rows="5" required></textarea>
+                    <button type="submit" class="login-button">Salvar Salões</button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>
