@@ -312,6 +312,17 @@ app.post('/dashboard/presentes/remover/:id', isAuth, async (req, res) => {
 	}
 });
 
+app.get('/dashboard/mensagens', isAuth, async (req, res) => {
+    try {
+        const result = await db.query('SELECT * FROM mensagens ORDER BY data_envio DESC');
+        const mensagens = result.rows;
+        res.render('mensagens_admin', { mensagens });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao carregar as mensagens.');
+    }
+});
+
 app.get('/logout', (req, res) => {
 	req.session.destroy(err => {
 		if (err) {

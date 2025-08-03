@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensagens dos Convidados - Dashboard</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body class="dashboard-page">
+
+    <div class="dashboard-container">
+        <%- include('../../public/components/dashboard_menu.html') %>
+
+        <main class="dashboard-content">
+            <h2>Mensagens dos Convidados</h2>
+            <div class="table-responsive">
+                <table class="mensagens-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Mensagem</th>
+                            <th>Data de Envio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% mensagens.forEach(mensagem => { %>
+                            <tr>
+                                <td><%= mensagem.nome %></td>
+                                <td><%= mensagem.mensagem %></td>
+                                <td><%= mensagem.data_envio.toLocaleDateString('pt-BR') %></td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>
