@@ -308,9 +308,8 @@ body, html {
 }
 
 
-
 /*===============================
-     Confirmação de Presença
+     CONFIRMAÇÃO DE PRESENÇA
 =================================*/
 /* Estilos para a página de RSVP */
 .section-rsvp {
@@ -378,6 +377,410 @@ body, html {
     background-color: #A0522D;
 }
 
+/* Estilos para a página de sucesso do RSVP */
+.rsvp-success-page .page-content {
+    text-align: center;
+    max-width: 600px;
+}
+
+.rsvp-success-section h2 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3.5rem;
+    color: #8B4513;
+    margin-bottom: 1.5rem;
+}
+
+.rsvp-success-section p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    line-height: 1.5;
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+.return-home-button {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.8rem 2rem;
+    border: none;
+    background-color: #8B4513;
+    color: white;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.return-home-button:hover {
+    background-color: #A0522D;
+}
+
+
+/*===============================
+            PRESENTES
+=================================*/
+/* Estilos para a página de presentes */
+.presentes-page .page-content {
+    max-width: 1000px;
+}
+
+.section-presentes h2 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3rem;
+    text-align: center;
+    color: #8B4513;
+    margin-bottom: 1rem;
+}
+
+.presentes-intro {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    text-align: center;
+    color: #555;
+    margin-bottom: 3rem;
+}
+
+.presentes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.presente-item {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilos para o estado de 'comprado' */
+.presente-item.comprado {
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.presente-item.comprado img {
+    filter: grayscale(100%); /* Deixa a imagem em preto e branco */
+}
+
+.presente-item.comprado .presente-titulo,
+.presente-item.comprado .presente-valor,
+.presente-item.comprado .presente-descricao {
+    color: #999; /* Cor do texto cinza claro */
+}
+
+.presente-item.comprado .presente-button {
+    background-color: #e0e0e0;
+    color: #999;
+    cursor: not-allowed;
+}
+
+.presente-item.comprado .presente-button:hover {
+    background-color: #e0e0e0; /* Mantém a cor no hover */
+}
+
+.presente-titulo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.presente-valor {
+    font-size: 1.8rem;
+    color: #8B4513;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.presente-descricao {
+    font-size: 1rem;
+    color: #777;
+    flex-grow: 1; /* Garante que o botão fique na parte inferior */
+}
+
+.presente-button {
+    margin-top: 1.5rem;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    background-color: #8B4513;
+    color: white;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.presente-button:hover {
+    background-color: #A0522D;
+}
+
+/* Estilos para a tabela de presentes do dashboard */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.presentes-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.presentes-table th, .presentes-table td {
+    padding: 1rem;
+    text-align: left;
+    font-family: 'Cormorant Garamond', serif;
+    vertical-align: middle;
+}
+
+.presentes-table thead tr {
+    background-color: #f7f3f0;
+    color: #8B4513;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.presentes-table tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.presentes-table tbody tr:hover {
+    background-color: #f0e9e5;
+}
+
+.presentes-table td {
+    border-top: 1px solid #eee;
+}
+
+/* Estilos para os botões de ação */
+.presente-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Remove o estilo de formulário dos botões de ação na tabela */
+.presente-actions form {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    display: inline-block; /* O inline-block é mais previsível que o inline puro */
+}
+
+.action-button {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    font-weight: 700;
+    outline: none;
+}
+
+.action-button:focus,
+.action-button:active {
+    box-shadow: none;
+}
+
+.comprar-button {
+    background-color: #8B4513;
+    transition: background-color 0.3s ease;
+}
+
+.comprar-button:hover {
+    background-color: #A0522D;
+}
+
+.remover-button {
+    background-color: #dc3545;
+    transition: background-color 0.3s ease;
+}
+
+.remover-button:hover {
+    background-color: #c82333;
+}
+
+/* Estilo para o botão de Reativar */
+.reativar-button {
+    background-color: #98fb98; /* Verde pastel */
+    color: #444;
+    transition: background-color 0.3s ease;
+}
+
+.reativar-button:hover {
+    background-color: #8be18b; /* Um verde um pouco mais escuro no hover */
+}
+/* Estilos para o Modal */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #8B4513;
+}
+
+.modal-content h3 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2rem;
+    color: #8B4513;
+    margin-bottom: 1rem;
+}
+
+.modal-body h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    color: #555;
+    margin-top: 1rem;
+}
+
+#modal-valor {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+#modal-pix,
+.modal-body p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+#modal-marketplace {
+    display: block;
+    margin-top: 1.5rem;
+    text-align: center;
+    padding: 0.8rem 1.5rem;
+    background-color: #8B4513;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+#modal-marketplace:hover {
+    background-color: #A0522D;
+}
+
+
+/*===============================
+            MENSAGEM
+=================================*/
+/* Estilos para a página de Mensagens */
+.mensagem-page .page-content {
+    max-width: 600px;
+}
+
+.section-mensagem {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    padding: 2rem 0;
+}
+
+.section-mensagem h2 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3rem;
+    color: #8B4513;
+    margin-bottom: 1rem;
+}
+
+.section-mensagem p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+}
+
+.mensagem-form {
+    background-color: white;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.mensagem-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.mensagem-form label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.mensagem-form input[type="text"] {
+    max-width: 100%; /* Faz o campo de nome mais curto */
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+.mensagem-form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: 'Cormorant Garamond', serif;
+    resize: vertical; /* Permite que o usuário redimensione a altura */
+    min-height: 150px; /* Define uma altura mínima maior para a mensagem */
+}
+
+.mensagem-button {
+    width: 100%;
+    padding: 0.8rem;
+    border: none;
+    background-color: #8B4513;
+    color: white;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.mensagem-button:hover {
+    background-color: #A0522D;
+}
 
 /*===============================
               LOGIN
@@ -449,7 +852,6 @@ body, html {
 .login-button:hover {
     background-color: #A0522D;
 }
-
 
 
 /*===============================
@@ -573,4 +975,43 @@ body, html {
     font-size: 1.8rem;
     color: #555;
     margin-bottom: 1rem;
+}
+
+/* Estilos para a tabela de RSVP no dashboard */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.rsvp-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.rsvp-table th, .rsvp-table td {
+    padding: 1rem;
+    text-align: left;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+.rsvp-table thead tr {
+    background-color: #f7f3f0;
+    color: #8B4513;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.rsvp-table tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.rsvp-table tbody tr:hover {
+    background-color: #f0e9e5;
+}
+
+.rsvp-table td {
+    border-top: 1px solid #eee;
 }

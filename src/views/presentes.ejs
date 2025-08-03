@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Presentes - J&P</title>
+    <link rel="icon" href="../assets/img/coracao-rosa-solido.webp" type="image/png">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
+<body class="presentes-page">
+
+    <%- include('../../public/components/header.html') %>
+
+    <main class="page-content">
+      <section class="section-presentes">
+        <h2>Lista de Presentes</h2>
+        <p class="presentes-intro">Sua presença é o nosso maior presente, mas se quiser nos presentear com algo, ficaremos muito felizes!</p>
+
+        <div class="presentes-grid">
+          <% presentes.forEach(presente => { %>
+            <div class="presente-item <%= presente.status === 'comprado' ? 'comprado' : '' %>">
+              <% if (presente.imagem_url) { %>
+                <img src="<%= presente.imagem_url %>" alt="Imagem de <%= presente.nome %>" class="presente-imagem">
+              <% } %>
+              <div class="presente-titulo"><%= presente.nome %></div>
+              <div class="presente-valor">
+                R$ <%= parseFloat(presente.valor).toFixed(2) %>
+              </div>
+              <div class="presente-descricao"><%= presente.descricao %></div>
+              <button class="presente-button" 
+                <%= presente.status === 'comprado' ? 'disabled' : '' %>
+                data-id="<%= presente.id %>"
+                data-nome="<%= presente.nome %>"
+                data-valor="<%= parseFloat(presente.valor).toFixed(2) %>"
+                data-pix="<%= presente.pix_info %>"
+                data-marketplace="<%= presente.marketplace_url %>">
+                <%= presente.status === 'comprado' ? 'Comprado' : 'Comprar Presente' %>
+              </button>
+            </div>
+          <% }); %>
+        </div>
+      </section>
+    </main>
+    <%- include('../../public/components/presentes_modal.ejs') %>
+    <script src="/assets/js/main.js"></script>
+</body>
+</html>

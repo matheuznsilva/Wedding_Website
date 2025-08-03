@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciar Presentes - Dashboard</title>
+  <link rel="icon" href="../assets/img/coracao-rosa-solido.webp" type="image/png">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body class="dashboard-page">
+
+    <div class="dashboard-container">
+        <%- include('../../public/components/dashboard_menu.html') %>
+
+        <main class="dashboard-content">
+            <h2>Gerenciar Lista de Presentes</h2>
+
+            <h3>Adicionar Novo Presente</h3>
+            <form action="/dashboard/presentes" method="POST" class="presente-form" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="nome">Nome do Presente</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="valor">Valor (R$)</label>
+                    <input type="number" id="valor" name="valor" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="descricao">Descrição (opcional)</label>
+                    <textarea id="descricao" name="descricao" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="pix_info">Chave PIX ou informações de pagamento (opcional)</label>
+                    <textarea id="pix_info" name="pix_info" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="imagem">Foto do Presente</label>
+                    <input type="file" id="imagem" name="imagem">
+                </div>
+                <div class="form-group">
+                    <label for="marketplace_url">Link do Marketplace (Amazon, Magalu, etc.)</label>
+                    <input type="url" id="marketplace_url" name="marketplace_url">
+                </div>
+                <button type="submit" class="login-button">Adicionar Presente</button>
+            </form>
+
+            <h3 style="margin-top: 3rem;">Presentes Existentes</h3>
+            <div class="table-responsive">
+                <table class="presentes-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% presentes.forEach(presente => { %>
+                            <tr>
+                                <td><%= presente.nome %></td>
+                                <td>R$ <%= parseFloat(presente.valor).toFixed(2) %></td>
+                                <td><%= presente.status %></td>
+                                <td>
+                                    <div class="presente-actions">
+                                        <% if (presente.status === 'disponivel' || presente.status === 'reservado') { %>
+                                            <form action="/dashboard/presentes/comprado/<%= presente.id %>" method="POST">
+                                                <button type="submit" class="action-button comprar-button">Comprado</button>
+                                            </form>
+                                        <% } %>
+                                        <% if (presente.status !== 'disponivel') { %>
+                                            <form action="/dashboard/presentes/reativar/<%= presente.id %>" method="POST">
+                                                <button type="submit" class="action-button reativar-button">Reativar</button>
+                                            </form>
+                                        <% } %>
+                                        <form action="/dashboard/presentes/remover/<%= presente.id %>" method="POST" onsubmit="return confirm('Tem certeza?');">
+                                            <button type="submit" class="action-button remover-button">Remover</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

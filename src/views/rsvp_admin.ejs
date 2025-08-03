@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Presença - Dashboard</title>
+	  <link rel="icon" href="../assets/img/coracao-rosa-solido.webp" type="image/png">
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body class="dashboard-page">
+
+  <div class="dashboard-container">
+    <%- include('../../public/components/dashboard_menu.html') %>
+
+    <main class="dashboard-content">
+      <h2>Lista de Convidados</h2>
+      <p>Total de adultos: <%= totalAdultos %></p>
+      <p>Total de crianças: <%= totalCriancas %></p>
+      
+      <div class="table-responsive">
+        <table class="rsvp-table">
+          <thead>
+            <tr>
+              <th>Nome do Convidado</th>
+              <th>Adultos</th>
+              <th>Crianças</th>
+              <th>Data de Confirmação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% rsvps.forEach(rsvp => { %>
+              <tr>
+                <td><%= rsvp.nome_convidado %></td>
+                <td><%= rsvp.quantidade_adultos %></td>
+                <td><%= rsvp.quantidade_criancas %></td>
+                <td><%= rsvp.data_confirmacao.toLocaleDateString('pt-BR') %></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>

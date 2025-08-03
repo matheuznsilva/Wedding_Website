@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deixe uma Mensagem - J&P</title>
+    <link rel="icon" href="../assets/img/coracao-rosa-solido.webp" type="image/png">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
+<body class="mensagem-page">
+
+    <%- include('../../public/components/header.html') %>
+
+    <main class="page-content">
+        <section class="section-mensagem">
+            <h2>Deixe sua Mensagem</h2>
+            <p>Deixe um recado carinhoso para os noivos. Eles ficarão muito felizes em ler!</p>
+            <form action="/mensagem" method="POST" class="mensagem-form">
+                <div class="form-group">
+                    <label for="nome">Seu Nome</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="mensagem">Sua Mensagem</label>
+                    <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="mensagem-button">Enviar Mensagem</button>
+            </form>
+        </section>
+    </main>
+
+</body>
+</html>
