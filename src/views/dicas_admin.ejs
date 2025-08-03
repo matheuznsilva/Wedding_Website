@@ -14,9 +14,16 @@
         <main class="dashboard-content">
             <h2>Gerenciar Dicas</h2>
             <div class="dicas-admin-container">
-                <form action="/dashboard/dicas/dresscode" method="POST">
+                <form action="/dashboard/dicas/dresscode" method="POST" enctype="multipart/form-data">
                     <h3>Dress Code</h3>
-                    <textarea name="conteudo" rows="5" required></textarea>
+                    <textarea name="conteudo" rows="5" required><%= dicas.dresscode?.conteudo || '' %></textarea>
+                    <div class="form-group">
+                        <label for="imagem_dresscode">Foto</label>
+                        <input type="file" id="imagem_dresscode" name="imagem">
+                        <% if (dicas.dresscode && dicas.dresscode.imagem_url) { %>
+                            <p>Imagem atual: <a href="<%= dicas.dresscode.imagem_url %>" target="_blank">Visualizar</a></p>
+                        <% } %>
+                    </div>
                     <button type="submit" class="login-button">Salvar Dress Code</button>
                 </form>
 

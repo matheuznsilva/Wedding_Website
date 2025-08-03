@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirme sua Presença - J&P</title>
+  <link rel="icon" href="../assets/img/coracao-rosa-solido.webp" type="image/png">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
+
+<body class="rsvp-page">
+
+  <%- include('../../public/components/header.html') %>
+
+  <main class="page-content">
+    <section class="section-rsvp">
+      <h2>Confirme sua Presença</h2>
+      <p>Por favor, nos ajude a organizar este dia especial. Confirme sua presença e o número de acompanhantes até a
+        data limite.</p>
+      <form action="/rsvp" method="POST" class="rsvp-form">
+        <div class="form-group">
+          <label for="nome">Nome Completo</label>
+          <input type="text" id="nome" name="nome_convidado" required>
+        </div>
+        <div class="form-group">
+          <label for="quantidade_adultos">Quantidade de Adultos (incluindo você)</label>
+          <input type="number" id="quantidade_adultos" name="quantidade_adultos" min="1" required>
+        </div>
+        <div class="form-group">
+          <label for="quantidade_criancas">Quantidade de Crianças</label>
+          <input type="number" id="quantidade_criancas" name="quantidade_criancas" min="0" value="0">
+        </div>
+        <button type="submit" class="rsvp-button">Confirmar</button>
+      </form>
+    </section>
+  </main>
+
+</body>
+</html>

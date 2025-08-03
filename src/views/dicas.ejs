@@ -1,33 +1,41 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dicas para o Casamento - J&P</title>
-    <link rel="icon" href="../assets/img/coracao-rosa-solido.webp" type="image/png">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dicas para o Casamento - J&P</title>
+	<link rel="icon" href="../assets/img/coracao-rosa-solido.webp" type="image/png">
+	<link rel="stylesheet" href="/assets/css/style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Great+Vibes&display=swap"
+		rel="stylesheet">
 </head>
+
 <body class="dicas-page">
 
-    <%- include('../../public/components/header.html') %>
+	<%- include('../../public/components/header.html') %>
 
-    <main class="page-content">
-        <section class="section-dicas">
-            <h2>Dicas para o Grande Dia</h2>
-            <div class="dicas-menu">
-                <button class="dica-botao" onclick="mostrarDica('dresscode')">Dress Code</button>
-                <button class="dica-botao" onclick="mostrarDica('hoteis')">Hotéis</button>
-                <button class="dica-botao" onclick="mostrarDica('salao')">Salões de Beleza</button>
-            </div>
-            
-            <div id="conteudo-dica">
-                <p>Clique em um dos botões acima para ver as dicas!</p>
-            </div>
-        </section>
-    </main>
+		<main class="page-content">
+			<section class="section-dicas">
+				<h2>Dicas para o Grande Dia</h2>
+				<div class="dicas-menu">
+					<button class="dica-botao" data-categoria="dresscode">Dress Code</button>
+					<button class="dica-botao" data-categoria="hoteis">Hotéis</button>
+					<button class="dica-botao" data-categoria="salao">Salões de Beleza</button>
+				</div>
 
+				<div id="conteudo-dica">
+					<p>Clique em um dos botões acima para ver as dicas!</p>
+				</div>
+			</section>
+		</main>
+
+		<script>
+			window.dicas = <%= JSON.stringify(dicas) %>;
+		</script>
+		<script src="/assets/js/main.js"></script>
 </body>
+
 </html>

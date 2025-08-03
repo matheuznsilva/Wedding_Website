@@ -52,8 +52,41 @@ app.get('/historia', async (req, res) => {
 });
 
 // Rota para a página de Dicas
-app.get('/dicas', (req, res) => {
-    res.render('dicas');
+app.get('/dicas', async (req, res) => {
+    try {
+        const dicasResult = await db.query('SELECT * FROM dicas');
+        const dicas = {};
+        dicasResult.rows.forEach(dica => {
+            dicas[dica.categoria] = {
+                conteudo: dica.conteudo,
+                imagem_url: dica.imagem_url
+            };
+        });
+        res.render('dicas', { dicas });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao carregar as dicas.');
+    }
+});
+
+// Rota para a pagina de Confirmação de Presenças
+app.get('/rsvp', (req, res) => {
+    res.render('rsvp');
+});
+
+app.post('/rsvp', async (req, res) => {
+    const { nome_convidado, quantidade_adultos, quantidade_criancas } = req.body;
+    
+    try {
+        await db.query(
+            'INSERT INTO rsvp (nome_convidado, quantidade_adultos, quantidade_criancas) VALUES ($1, $2, $3)',
+            [nome_convidado, quantidade_adultos, quantidade_criancas]
+        );
+        res.render('rsvp_sucesso'); // Criaremos essa página em seguida
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao confirmar sua presença.');
+    }
 });
 
 // Rota para exibir a página de login
@@ -150,16 +183,19 @@ app.get('/dashboard/dicas', isAuth, async (req, res) => {
     }
 });
 
-app.post('/dashboard/dicas/:categoria', isAuth, async (req, res) => {
+app.post('/dashboard/dicas/:categoria', isAuth, upload.single('imagem'), async (req, res) => {
     const { categoria } = req.params;
     const { conteudo } = req.body;
+    const imagem_url = req.file ? `/uploads/${req.file.filename}` : null;
+    
     try {
         await db.query(`
-            INSERT INTO dicas (categoria, conteudo)
-            VALUES ($1, $2)
+            INSERT INTO dicas (categoria, conteudo, imagem_url)
+            VALUES ($1, $2, $3)
             ON CONFLICT (categoria) DO UPDATE
-            SET conteudo = EXCLUDED.conteudo;
-        `, [categoria, conteudo]);
+            SET conteudo = EXCLUDED.conteudo,
+                imagem_url = COALESCE($3, dicas.imagem_url);
+        `, [categoria, conteudo, imagem_url]);
         res.redirect('/dashboard/dicas');
     } catch (error) {
         console.error(error);
