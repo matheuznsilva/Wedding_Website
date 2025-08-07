@@ -1,45 +1,52 @@
-// Importa o Express, que vamos usar para criar o nosso servidor
+// Importa as dependências e configura o .env
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const path = require('path');
 const bcrypt = require('bcrypt');
 const db = require('./db/database');
 const session = require('express-session');
-const multer = require('multer'); // Importa o multer
+const multer = require('multer');
+const PDFDocument = require('pdfkit');
+const { Client } = require("@googlemaps/google-maps-services-js");
+const googleMapsClient = new Client({ key: process.env.Maps_API_KEY });
 const PORT = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-// Serve os arquivos estáticos (CSS, JS, imagens) da pasta 'public'
 app.use(express.static('public'));
-
-// Serve os arquivos da pasta 'uploads' sob a rota /uploads
 app.use('/uploads', express.static('uploads'));
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
-	secret: 'sua_chave_secreta_aqui',
+	secret: process.env.SESSION_SECRET || 'sua_chave_secreta_aqui',
 	resave: false,
 	saveUninitialized: true,
 	cookie: { secure: false }
 }));
 
-// Configuração do Multer para o upload de arquivos
 const storage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		cb(null, 'uploads/');
-	},
-	filename: (req, file, cb) => {
-		cb(null, Date.now() + path.extname(file.originalname));
-	}
+	destination: (req, file, cb) => { cb(null, 'uploads/'); },
+	filename: (req, file, cb) => { cb(null, Date.now() + path.extname(file.originalname)); }
 });
 const upload = multer({ storage: storage });
 
-// Rota principal do nosso site
-app.get('/', (req, res) => {
-	res.render('index');
+const isAuth = (req, res, next) => {
+	if (req.session.isAuth) { next(); } else { res.redirect('/login'); }
+};
+
+// Rotas para as páginas públicas
+app.get('/', async (req, res) => {
+    try {
+        const configuracoesResult = await db.query('SELECT * FROM configuracoes LIMIT 1');
+        const configuracoes = configuracoesResult.rows[0] || {};
+        
+        res.render('index', { configuracoes });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao carregar a página inicial.');
+    }
 });
 
-// Rota para a página de História
 app.get('/historia', async (req, res) => {
 	try {
 		const result = await db.query('SELECT * FROM historia LIMIT 1');
@@ -51,17 +58,11 @@ app.get('/historia', async (req, res) => {
 	}
 });
 
-// Rota para a página de Dicas
 app.get('/dicas', async (req, res) => {
 	try {
 		const dicasResult = await db.query('SELECT * FROM dicas');
 		const dicas = {};
-		dicasResult.rows.forEach(dica => {
-			dicas[dica.categoria] = {
-				conteudo: dica.conteudo,
-				imagem_url: dica.imagem_url
-			};
-		});
+		dicasResult.rows.forEach(dica => { dicas[dica.categoria] = { conteudo: dica.conteudo, imagem_url: dica.imagem_url }; });
 		res.render('dicas', { dicas });
 	} catch (error) {
 		console.error(error);
@@ -69,27 +70,30 @@ app.get('/dicas', async (req, res) => {
 	}
 });
 
-// Rota para a pagina de Confirmação de Presenças
-app.get('/rsvp', (req, res) => {
-	res.render('rsvp');
+app.get('/rsvp', async (req, res) => {
+    try {
+        res.render('rsvp');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao carregar a página de RSVP.');
+    }
 });
 
 app.post('/rsvp', async (req, res) => {
-	const { nome_convidado, quantidade_adultos, quantidade_criancas } = req.body;
+    try {
+        const { nome_convidado, quantidade_adultos, quantidade_criancas } = req.body;
 
-	try {
-		await db.query(
-			'INSERT INTO rsvp (nome_convidado, quantidade_adultos, quantidade_criancas) VALUES ($1, $2, $3)',
-			[nome_convidado, quantidade_adultos, quantidade_criancas]
-		);
-		res.render('rsvp_sucesso'); // Criaremos essa página em seguida
-	} catch (error) {
-		console.error(error);
-		res.status(500).send('Erro ao confirmar sua presença.');
-	}
+        await db.query(
+            'INSERT INTO rsvp (nome_convidado, quantidade_adultos, quantidade_criancas) VALUES ($1, $2, $3)',
+            [nome_convidado, quantidade_adultos, quantidade_criancas]
+        );
+        res.render('rsvp_sucesso');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao confirmar sua presença.');
+    }
 });
 
-// Rota para exibir a pagina de presentes
 app.get('/presentes', async (req, res) => {
 	try {
 		const result = await db.query('SELECT * FROM presentes ORDER BY id ASC');
@@ -102,42 +106,60 @@ app.get('/presentes', async (req, res) => {
 });
 
 app.post('/api/presentes/reservar/:id', async (req, res) => {
-    const { id } = req.params;
+	const { id } = req.params;
+	try {
+		await db.query('UPDATE presentes SET status = $1 WHERE id = $2', ['reservado', id]);
+		res.status(200).send({ message: 'Presente reservado com sucesso!' });
+	} catch (error) {
+		console.error(error);
+		res.status(500).send({ message: 'Erro ao reservar o presente.' });
+	}
+});
+
+app.get('/mensagem', async (req, res) => {
     try {
-        await db.query('UPDATE presentes SET status = $1 WHERE id = $2', ['reservado', id]);
-        res.status(200).send({ message: 'Presente reservado com sucesso!' });
+        res.render('mensagem');
     } catch (error) {
         console.error(error);
-        res.status(500).send({ message: 'Erro ao reservar o presente.' });
+        res.status(500).send('Erro ao carregar a página de mensagens.');
     }
 });
 
-// Rota para a página de mensagens
-app.get('/mensagem', (req, res) => {
-    res.render('mensagem');
-});
-
-// Rota para processar o formulário de mensagens
 app.post('/mensagem', async (req, res) => {
-    const { nome, mensagem } = req.body;
     try {
+        const { nome, mensagem } = req.body;
+
         await db.query(
             'INSERT INTO mensagens (nome, mensagem) VALUES ($1, $2)',
             [nome, mensagem]
         );
-        res.render('mensagem_sucesso'); // Criaremos essa página em seguida
+        res.render('mensagem_sucesso');
     } catch (error) {
         console.error(error);
         res.status(500).send('Erro ao enviar a mensagem.');
     }
 });
 
-// Rota para exibir a página de login
-app.get('/login', (req, res) => {
-	res.render('login');
+app.get('/local', async (req, res) => {
+    try {
+        const result = await db.query('SELECT * FROM local LIMIT 1');
+        const local = result.rows[0] || {};
+        res.render('local', { local, googleMapsApiKey: process.env.Maps_API_KEY });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao carregar o local.');
+    }
 });
 
-// Rota para processar o formulário de login
+app.get('/login', async (req, res) => {
+    try {
+        res.render('login');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao carregar a página de login.');
+    }
+});
+
 app.post('/login', async (req, res) => {
 	const { username, password } = req.body;
 
@@ -146,11 +168,9 @@ app.post('/login', async (req, res) => {
 		const user = result.rows[0];
 
 		if (user && await bcrypt.compare(password, user.password_hash)) {
-			// Login bem-sucedido
 			req.session.isAuth = true;
 			res.redirect('/dashboard');
 		} else {
-			// Login falhou
 			res.send('Usuário ou senha incorretos.');
 		}
 	} catch (error) {
@@ -159,17 +179,13 @@ app.post('/login', async (req, res) => {
 	}
 });
 
-// Rota protegida para o Dashboard
-const isAuth = (req, res, next) => {
-	if (req.session.isAuth) {
-		next();
-	} else {
-		res.redirect('/login');
-	}
-};
-
-app.get('/dashboard', isAuth, (req, res) => {
-	res.render('dashboard');
+app.get('/dashboard', isAuth, async (req, res) => {
+    try {
+        res.render('dashboard');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao carregar o dashboard.');
+    }
 });
 
 app.get('/dashboard/historia', isAuth, async (req, res) => {
@@ -183,7 +199,35 @@ app.get('/dashboard/historia', isAuth, async (req, res) => {
 	}
 });
 
-// Rota para processar o formulário de gerenciamento da história
+app.get('/dashboard/home', isAuth, async (req, res) => {
+    try {
+        const result = await db.query('SELECT * FROM configuracoes LIMIT 1');
+        const configuracoes = result.rows[0] || {};
+        res.render('home_admin', { configuracoes });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao carregar as configurações da home.');
+    }
+});
+
+app.post('/dashboard/home', isAuth, upload.single('foto_fundo'), async (req, res) => {
+    const { data_casamento } = req.body;
+    const foto_fundo_url = req.file ? `/uploads/${req.file.filename}` : null;
+    
+    try {
+        await db.query(`
+            INSERT INTO configuracoes (id, data_casamento, foto_fundo_url)
+            VALUES (1, $1, $2)
+            ON CONFLICT (id) DO UPDATE
+            SET data_casamento = $1, foto_fundo_url = COALESCE($2, configuracoes.foto_fundo_url);
+        `, [data_casamento, foto_fundo_url]);
+        res.redirect('/dashboard/home');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao salvar as configurações da home.');
+    }
+});
+
 app.post('/dashboard/historia', isAuth, upload.single('imagem'), async (req, res) => {
 	const { titulo, texto } = req.body;
 	const imagem_url = req.file ? `/uploads/${req.file.filename}` : null;
@@ -207,7 +251,10 @@ app.get('/dashboard/dicas', isAuth, async (req, res) => {
 		const dicasResult = await db.query('SELECT * FROM dicas');
 		const dicas = {};
 		dicasResult.rows.forEach(dica => {
-			dicas[dica.categoria] = dica.conteudo;
+			dicas[dica.categoria] = {
+				conteudo: dica.conteudo,
+				imagem_url: dica.imagem_url
+			};
 		});
 		res.render('dicas_admin', { dicas });
 	} catch (error) {
@@ -241,14 +288,48 @@ app.get('/dashboard/rsvp', isAuth, async (req, res) => {
 		const result = await db.query('SELECT * FROM rsvp ORDER BY data_confirmacao DESC');
 		const rsvps = result.rows;
 
-		// Calcula o total de adultos e crianças
 		const totalAdultos = rsvps.reduce((sum, rsvp) => sum + rsvp.quantidade_adultos, 0);
 		const totalCriancas = rsvps.reduce((sum, rsvp) => sum + rsvp.quantidade_criancas, 0);
+		const totalPessoas = totalAdultos + totalCriancas;
 
-		res.render('rsvp_admin', { rsvps, totalAdultos, totalCriancas });
+		res.render('rsvp_admin', { rsvps, totalAdultos, totalCriancas, totalPessoas });
 	} catch (error) {
 		console.error(error);
 		res.status(500).send('Erro ao carregar a lista de convidados.');
+	}
+});
+
+app.get('/dashboard/rsvp/download', isAuth, async (req, res) => {
+	try {
+		const result = await db.query('SELECT * FROM rsvp ORDER BY nome_convidado ASC');
+		const rsvps = result.rows;
+
+		const doc = new PDFDocument();
+		const filename = 'lista_de_convidados.pdf';
+
+		res.setHeader('Content-disposition', `attachment; filename="${filename}"`);
+		res.setHeader('Content-type', 'application/pdf');
+
+		const totalAdultos = rsvps.reduce((sum, rsvp) => sum + rsvp.quantidade_adultos, 0);
+		const totalCriancas = rsvps.reduce((sum, rsvp) => sum + rsvp.quantidade_criancas, 0);
+		const totalPessoas = totalAdultos + totalCriancas;
+
+		doc.fontSize(16).text(`Lista de Convidados - Casamento J&P`, { align: 'center' });
+		doc.moveDown(1);
+		doc.fontSize(12).text(`Total de Pessoas: ${totalPessoas}`, { align: 'left' });
+		doc.text(`Total de Adultos: ${totalAdultos}`, { align: 'left' });
+		doc.text(`Total de Crianças: ${totalCriancas}`, { align: 'left' });
+		doc.moveDown();
+
+		rsvps.forEach(rsvp => {
+			doc.text(`- Convidado: ${rsvp.nome_convidado} | Adultos: ${rsvp.quantidade_adultos} | Crianças: ${rsvp.quantidade_criancas}`);
+		});
+
+		doc.pipe(res);
+		doc.end();
+	} catch (error) {
+		console.error(error);
+		res.status(500).send('Erro ao gerar o PDF.');
 	}
 });
 
@@ -291,14 +372,14 @@ app.post('/dashboard/presentes/comprado/:id', isAuth, async (req, res) => {
 });
 
 app.post('/dashboard/presentes/reativar/:id', isAuth, async (req, res) => {
-    const { id } = req.params;
-    try {
-        await db.query('UPDATE presentes SET status = $1 WHERE id = $2', ['disponivel', id]);
-        res.redirect('/dashboard/presentes');
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Erro ao reativar o presente.');
-    }
+	const { id } = req.params;
+	try {
+		await db.query('UPDATE presentes SET status = $1 WHERE id = $2', ['disponivel', id]);
+		res.redirect('/dashboard/presentes');
+	} catch (error) {
+		console.error(error);
+		res.status(500).send('Erro ao reativar o presente.');
+	}
 });
 
 app.post('/dashboard/presentes/remover/:id', isAuth, async (req, res) => {
@@ -313,14 +394,53 @@ app.post('/dashboard/presentes/remover/:id', isAuth, async (req, res) => {
 });
 
 app.get('/dashboard/mensagens', isAuth, async (req, res) => {
-    try {
-        const result = await db.query('SELECT * FROM mensagens ORDER BY data_envio DESC');
-        const mensagens = result.rows;
-        res.render('mensagens_admin', { mensagens });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Erro ao carregar as mensagens.');
-    }
+	try {
+		const result = await db.query('SELECT * FROM mensagens ORDER BY data_envio DESC');
+		const mensagens = result.rows;
+		res.render('mensagens_admin', { mensagens });
+	} catch (error) {
+		console.error(error);
+		res.status(500).send('Erro ao carregar as mensagens.');
+	}
+});
+
+app.get('/dashboard/local', isAuth, async (req, res) => {
+	try {
+		const result = await db.query('SELECT * FROM local LIMIT 1');
+		const local = result.rows[0] || {};
+		res.render('local_admin', { local });
+	} catch (error) {
+		console.error(error);
+		res.status(500).send('Erro ao carregar o local.');
+	}
+});
+
+app.post('/dashboard/local', isAuth, async (req, res) => {
+	const { rua, numero, bairro, cidade, estado } = req.body;
+	const enderecoCompleto = `${rua}, ${numero} - ${bairro}, ${cidade} - ${estado}`;
+
+	try {
+		const geoResult = await googleMapsClient.geocode({
+			params: {
+				address: enderecoCompleto,
+				key: process.env.Maps_API_KEY,
+			},
+		});
+
+		const { lat, lng } = geoResult.data.results[0].geometry.location;
+
+		await db.query(`
+            INSERT INTO local (id, rua, numero, bairro, cidade, estado, latitude, longitude)
+            VALUES (1, $1, $2, $3, $4, $5, $6, $7)
+            ON CONFLICT (id) DO UPDATE
+            SET rua = $1, numero = $2, bairro = $3, cidade = $4, estado = $5, latitude = $6, longitude = $7;
+        `, [rua, numero, bairro, cidade, estado, lat, lng]);
+
+		res.redirect('/dashboard/local');
+	} catch (error) {
+		console.error(error);
+		res.status(500).send('Erro ao salvar o local.');
+	}
 });
 
 app.get('/logout', (req, res) => {
@@ -333,7 +453,6 @@ app.get('/logout', (req, res) => {
 	});
 });
 
-// Inicia o servidor e o faz "escutar" a porta definida
 app.listen(PORT, () => {
 	console.log(`Servidor rodando em http://localhost:${PORT}`);
 });

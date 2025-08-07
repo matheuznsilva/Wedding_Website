@@ -14,8 +14,10 @@
 
     <main class="dashboard-content">
       <h2>Lista de Convidados</h2>
+      <p><strong>Total de Pessoas:</strong> <%= totalPessoas %></p>
       <p>Total de adultos: <%= totalAdultos %></p>
       <p>Total de crianças: <%= totalCriancas %></p>
+      <a href="/dashboard/rsvp/download" class="download-button" target="_blank">Baixar Lista em PDF</a>
       
       <div class="table-responsive">
         <table class="rsvp-table">

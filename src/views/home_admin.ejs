@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Home - Dashboard</title>
+    <link rel="icon" href="../assets/img/coracao-rosa-solido.webp" type="image/png">
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body class="dashboard-page">
+
+    <div class="dashboard-container">
+        <%- include('../../public/components/dashboard_menu.html') %>
+
+        <main class="dashboard-content">
+            <h2>Gerenciar Página Inicial</h2>
+            <form action="/dashboard/home" method="POST" enctype="multipart/form-data" class="presente-form">
+                <div class="form-group">
+                    <label for="data_casamento">Data do Casamento</label>
+                    <input type="date" id="data_casamento" name="data_casamento" value="<%= configuracoes.data_casamento ? configuracoes.data_casamento.toISOString().slice(0,10) : '' %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="foto_fundo">Foto de Fundo</label>
+                    <input type="file" id="foto_fundo" name="foto_fundo">
+                    <% if (configuracoes.foto_fundo_url) { %>
+                        <p>Foto atual: <a href="<%= configuracoes.foto_fundo_url %>" target="_blank">Visualizar</a></p>
+                    <% } %>
+                </div>
+                <button type="submit" class="login-button">Salvar Configurações</button>
+            </form>
+        </main>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local da Cerimônia - J&P</title>
+    <link rel="icon" href="../assets/img/coracao-rosa-solido.webp" type="image/png">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
+<body class="local-page">
+
+    <%- include('../../public/components/header.html') %>
+
+    <main class="page-content">
+        <section class="section-local">
+            <h2>Local da Cerimônia</h2>
+            <div class="local-details">
+                <% if (local.rua) { %>
+                    <p><strong>Endereço:</strong> <span id="endereco-cerimonia"><%= local.rua %>, <%= local.numero %> - <%= local.bairro %>, <%= local.cidade %> - <%= local.estado %></span></p>
+                <% } else { %>
+                    <p>Nenhuma localização cadastrada.</p>
+                <% } %>
+            </div>
+            
+            <div id="mapa-container">
+                </div>
+        </section>
+    </main>
+
+    <script async src="https://maps.googleapis.com/maps/api/js?key=<%= googleMapsApiKey %>&callback=initMap"></script>
+    <script> window.localizacao = <%- JSON.stringify(local) %></script>
+    <script src="/assets/js/main.js"></script>
+
+</body>
+</html>
